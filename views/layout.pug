@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/master.css')
+    
+    script(src="/src/lib/jquery.min.js")
+  body
+    .wrapper
+      block content
+    .input
+      script(src="/src/input.js", defer=true)

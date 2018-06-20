@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  pre=errors
+  form(action="/", method="post")
+    input(type="text", name="un", placeholder="User name")
+    input(type="password", name="pw", placeholder="Password")
+    button(type="submit") Log In

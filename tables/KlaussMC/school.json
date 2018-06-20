@@ -1,0 +1,6 @@
+{
+    "displayName":"School",
+    "tableData": [
+        [{ "startTime": "09:00", "endTime": "10:20", "name":"IT" }, { "startTime": "10:20", "endTime": "11:10", "name":"PE" }, { "startTime": "11:10", "endTime": "11:30", "name":"RECESS" }, { "startTime": "11:30", "endTime": "12:40", "name":"GEOGRAPHY" }]
+    ]
+}

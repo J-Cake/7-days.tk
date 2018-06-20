@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    pre login successful
+    form(method="post", action="/logout")
+        button(yupe="submit") Log Out
+
+    ul
+        each item in tables
+            li
+                a(href="/dashboard/" + item)=item

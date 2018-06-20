@@ -1,0 +1,76 @@
+extends layout
+
+block content
+    script(src="/src/tableEditor.js")
+    script window.sessionStorage.rows = #{table.tableData.length}
+    script window.sessionStorage.cols = #{table.tableData[0].length}
+    table
+        tbody#tableBody
+            each row in table.tableData
+                tr
+                    each item in row
+                        td=item.name
+
+    .periodEditor
+        .name
+            input(placeholder="Period Title")#periodName
+            label(for="name") Period Name
+        .time
+            .start
+                .timePicker#start
+                label(for="start") Start Time
+            br
+            .end
+                .timePicker#end
+                label(for="end") End Time
+            br
+        .location
+            input(placeholder="Location")#location
+            label(for="location") Location
+        .toolbar
+            button#save Save
+            
+    
+    #settings
+        .toolbar
+            button#showSettings Show Settings
+        #controls
+            ul.activeDays
+                li
+                    input(type="checkbox")#mon
+                    label(for="mon") Mon
+                li
+                    input(type="checkbox")#tue
+                    label(for="tue") Tue
+                li
+                    input(type="checkbox")#wed
+                    label(for="web") Wed
+                li
+                    input(type="checkbox")#thu
+                    label(for="thu") Thu
+                li
+                    input(type="checkbox")#fri
+                    label(for="fri") Fri
+                li
+                    input(type="checkbox")#sat
+                    label(for="sat") Sat
+                li
+                    input(type="checkbox")#sun
+                    label(for="sub") Sun
+            .size
+                input(type="number", value=table.tableData.length, min="1", max="20")#rows
+                | Rows
+                br
+                input(type="number", value=table.tableData[0].length, min="1", max="20")#cols
+                | Columns
+
+            .notifications
+                .Priority
+                    input(type="radio", name="notification")#pri
+                    label(for="pri") Prioritise Notifications
+                .mute
+                    input(type="radio", name="notification")#mut
+                    label(for="mut") Mute Notifications
+                .standard
+                    input(type="radio", name="notification", checked)#std
+                    label(for="std") Standard Notifications
