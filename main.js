@@ -37,6 +37,20 @@ module.exports = (function () {
     funcs.readTable = function (user, tableName) {
         return JSON.parse(fs.readFileSync("tables/" + user + "/" + tableName + ".json"))
     }
+	funcs.saveTable = function(user, table) {
+		console.log(table)
+		var response = ""
+		try {
+			fs.writeFileSync(`tables/${user}/${table.settings.name}.json`, table)
+		} catch (e) {
+			response = "Error saving: \n" + e;
+		} finally {
+			if (!response)
+				response = "Save successfull";
+		}
+		console.log(response)
+		return response;
+	}
 
     return funcs
 })();

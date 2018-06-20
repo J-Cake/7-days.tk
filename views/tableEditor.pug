@@ -1,15 +1,32 @@
 extends layout
 
 block content
-    script(src="/src/tableEditor.js")
-    script window.sessionStorage.rows = #{table.tableData.length}
-    script window.sessionStorage.cols = #{table.tableData[0].length}
+    script(src="/src/tableEditor.js", defer="true")
+    script(src="/src/input.js", defer="true")
+    script(src="/src/export.js", defer="true")
+    script window.sessionStorage.rows = #{table.table.length}
+    script window.sessionStorage.cols = #{table.table[0].length}
+        
     table
         tbody#tableBody
-            each row in table.tableData
+            each row in table.table
                 tr
                     each item in row
-                        td=item.name
+                        td
+                            if (!item.hasOwnProperty("cont"))
+                                b.name= item.name
+                                br
+                                span.duration #{item.start} - #{item.end}
+                                br
+                                span.location=item.location
+                            else
+                                | #{item.cont}
+                        
+    script(src="/src/init.js", defer="true")
+    script $("document").ready(function () { window.vars.tableName = "#{table.settings.name}" } );
+    //- Each TD Item needs a UNIQUE ID
+    // This needs to be here because pug.js does not support itterating while maintaining the iterator index.
+    // So seperate ID's need to be given post-render.
 
     .periodEditor
         .name
@@ -35,6 +52,9 @@ block content
         .toolbar
             button#showSettings Show Settings
         #controls
+            .displayName
+                input#displayName
+                label(for="displayName") What the table will be displayed as
             ul.activeDays
                 li
                     input(type="checkbox")#mon
@@ -58,10 +78,10 @@ block content
                     input(type="checkbox")#sun
                     label(for="sub") Sun
             .size
-                input(type="number", value=table.tableData.length, min="1", max="20")#rows
+                input(type="number", value=table.table.length, min="1", max="20")#rows
                 | Rows
                 br
-                input(type="number", value=table.tableData[0].length, min="1", max="20")#cols
+                input(type="number", value=table.table[0].length, min="1", max="20")#cols
                 | Columns
 
             .notifications

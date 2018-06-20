@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 var express = require('express');
 var router = express.Router();
 
@@ -15,6 +15,7 @@ router.post('/', function (req, res) {
   var login = auth.login(req.body.un, req.body.pw)
 	// console.log(login)?
 	req.session.user = req.body.un;
+	console.log(req.session.user)
 	req.session.signedIn = login === 2;
 	req.session.fromSignup = false;
 	// 1 is pending, 2 is a success, 3 is a password failure, 4 is unknown username
@@ -25,7 +26,6 @@ router.post('/', function (req, res) {
 			req.session.error = "Wrong Password";
 		}
   }
-  req.session.user = req.body.un;
   res.redirect('/dashboard')
 });
 
@@ -49,6 +49,12 @@ router.get('/dashboard/:table', function (req, res) {
     req.session.errors = "You need to log in first"
 		res.redirect('/')
   }
+})
+router.put('/dashboard/save', function (req, res) {
+	var ajax = req.xhr;
+	if (ajax) {
+		res.send(main.saveTable(req.session.user, req.body))
+	}
 })
 
 module.exports = router;
