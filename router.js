@@ -53,7 +53,9 @@ router.get('/dashboard/:table', function (req, res) {
 router.put('/dashboard/save', function (req, res) {
 	var ajax = req.xhr;
 	if (ajax) {
-		res.send(main.saveTable(req.session.user, req.body))
+		var response = main.saveTable(req.session.user, req.body)
+		console.log(response)
+		res.send(response)
 	}
 })
 

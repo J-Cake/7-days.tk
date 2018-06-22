@@ -18,5 +18,9 @@
     "node-encrypt": "^1.1.0",
     "pug": "2.0.0-beta11",
     "session-file-store": "^1.2.0"
+  },
+  "devDependencies": {
+    "less-plugin-functions": "^1.0.0",
+    "less-plugin-sass2less": "^1.2.0"
   }
 }

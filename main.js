@@ -38,18 +38,22 @@ module.exports = (function () {
         return JSON.parse(fs.readFileSync("tables/" + user + "/" + tableName + ".json"))
     }
 	funcs.saveTable = function(user, table) {
-		console.log(table)
-		var response = ""
-		try {
-			fs.writeFileSync(`tables/${user}/${table.settings.name}.json`, table)
-		} catch (e) {
-			response = "Error saving: \n" + e;
-		} finally {
-			if (!response)
-				response = "Save successfull";
+		// console.log(table.settings)
+		if (table.settings.name) {
+			var response = ""
+			try {
+				fs.writeFileSync(`tables/${user}/${table.settings.name}.json`, JSON.stringify(table))
+			} catch (e) {
+				response = "Error saving: \n" + e;
+			} finally {
+				if (!response)
+					response = "Save successfull";
+			}
+			console.log(response)
+			return response;
+		} else {
+			return "A name must be provided";
 		}
-		console.log(response)
-		return response;
 	}
 
     return funcs

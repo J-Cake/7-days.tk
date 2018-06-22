@@ -4,93 +4,145 @@ block content
     script(src="/src/tableEditor.js", defer="true")
     script(src="/src/input.js", defer="true")
     script(src="/src/export.js", defer="true")
+    script(src="/src/window.js", defer="true")
+    script(src="/src/ui.js", defer="true")
+    script(src="/src/colorgen.js", defer="true")
+
     script window.sessionStorage.rows = #{table.table.length}
     script window.sessionStorage.cols = #{table.table[0].length}
-        
-    table
-        tbody#tableBody
-            each row in table.table
-                tr
-                    each item in row
-                        td
-                            if (!item.hasOwnProperty("cont"))
-                                b.name= item.name
-                                br
-                                span.duration #{item.start} - #{item.end}
-                                br
-                                span.location=item.location
-                            else
-                                | #{item.cont}
-                        
-    script(src="/src/init.js", defer="true")
-    script $("document").ready(function () { window.vars.tableName = "#{table.settings.name}" } );
-    //- Each TD Item needs a UNIQUE ID
-    // This needs to be here because pug.js does not support itterating while maintaining the iterator index.
-    // So seperate ID's need to be given post-render.
+    script window.sessionStorage.name = "#{table.settings.name || table.displayName}"
 
-    .periodEditor
-        .name
-            input(placeholder="Period Title")#periodName
-            label(for="name") Period Name
-        .time
-            .start
-                .timePicker#start
-                label(for="start") Start Time
-            br
-            .end
-                .timePicker#end
-                label(for="end") End Time
-            br
-        .location
-            input(placeholder="Location")#location
-            label(for="location") Location
-        .toolbar
-            button#save Save
-            
-    
-    #settings
-        .toolbar
-            button#showSettings Show Settings
-        #controls
-            .displayName
-                input#displayName
-                label(for="displayName") What the table will be displayed as
-            ul.activeDays
-                li
-                    input(type="checkbox")#mon
-                    label(for="mon") Mon
-                li
-                    input(type="checkbox")#tue
-                    label(for="tue") Tue
-                li
-                    input(type="checkbox")#wed
-                    label(for="web") Wed
-                li
-                    input(type="checkbox")#thu
-                    label(for="thu") Thu
-                li
-                    input(type="checkbox")#fri
-                    label(for="fri") Fri
-                li
-                    input(type="checkbox")#sat
-                    label(for="sat") Sat
-                li
-                    input(type="checkbox")#sun
-                    label(for="sub") Sun
-            .size
-                input(type="number", value=table.table.length, min="1", max="20")#rows
-                | Rows
-                br
-                input(type="number", value=table.table[0].length, min="1", max="20")#cols
-                | Columns
+    .main
+        .tools
+            button#showSettings
+                //- | Show Settings
+                img(src="/res/settings.png")
+                .tooltip Change table settings.
+            button#saveBtn
+                img(src="/res/save.png")
+                .tooltip Save the table to the server.
+            //- button#anchor &#128204; Anchor Mode
+            button#anchor
+                img(src="/res/anchorMode.png")
+                .tooltip Anchor two or more fields. Anchored fields are always the same except for their times.
+                //- (title="Anchor two or more fields. Anchored fields are always the same except for their times.")
 
-            .notifications
-                .Priority
-                    input(type="radio", name="notification")#pri
-                    label(for="pri") Prioritise Notifications
-                .mute
-                    input(type="radio", name="notification")#mut
-                    label(for="mut") Mute Notifications
-                .standard
-                    input(type="radio", name="notification", checked)#std
-                    label(for="std") Standard Notifications
+        .container
+            table
+                tbody#tableBody
+                    each row in table.table
+                        tr
+                            each item in row
+                                td
+                                    if (!item.hasOwnProperty("cont"))
+                                        b.name= item.name
+                                        br
+                                        span.duration #{item.start} - #{item.end}
+                                        br
+                                        span.location=item.location
+                                    else
+                                        | #{item.cont}
+
+            script(src="/src/init.js", defer="true")
+            script $("document").ready(function () { window.vars.tableName = "#{table.settings.name}" } );
+            //- Each TD Item needs a UNIQUE ID
+            // This needs to be here because pug.js does not support itterating while maintaining the iterator index.
+            // So seperate ID's need to be given post-render.
+
+            .periodEditor.window
+                .header Editor
+                    button.closeBtn
+                .wrapper
+                    .name
+                        label(for="name") Period Name
+                        input(placeholder="Period Title")#periodName
+                    .time
+                        .start
+                            label(for="start") Start Time
+                            .timePicker#start
+                        .end
+                            label(for="end") End Time
+                            .timePicker#end
+                    br
+                    .location
+                        label(for="location") Location
+                        input(placeholder="Location")#location
+                .toolbar
+                    button#save Save
+
+
+            #settings.window
+                .toolbar
+                    h2.header Settings
+                        button.closeBtn#closeSettingsBtn
+                #controls
+                    .displayName
+                        input#displayName
+                        script $("#displayName").val(window.sessionStorage.name)
+                        label(for="displayName") What the table will be displayed as
+                    ul.activeDays
+                        li
+                            .option
+                                input(type="checkbox", checked)#mon
+                                label(for="mon")
+                            span.optionLabel Mon
+                        li
+                            .option
+                                input(type="checkbox", checked)#tue
+                                label(for="tue")
+                            span.optionLabel Tue
+                        li
+                            .option
+                                input(type="checkbox", checked)#wed
+                                label(for="wed")
+                            span.optionLabel Wed
+                        li
+                            .option
+                                input(type="checkbox", checked)#thu
+                                label(for="thu")
+                            span.optionLabel Thu
+                        li
+                            .option
+                                input(type="checkbox", checked)#fri
+                                label(for="fri")
+                            span.optionLabel Fri
+                        li
+                            .option
+                                input(type="checkbox")#sat
+                                label(for="sat")
+                            span.optionLabel Sat
+                        li
+                            .option
+                                input(type="checkbox")#sun
+                                label(for="sun")
+                            span.optionLabel Sun
+                    .size
+                        input(type="number", value=table.table.length, min="1", max="20")#rows
+                        | Rows
+                        br
+                        input(type="number", value=table.table[0].length, min="1", max="20")#cols
+                        | Columns
+
+                    .notifications
+                        .Priority
+                            input(type="radio", name="notification")#pri
+                            label(for="pri") Prioritise Notifications
+                        .mute
+                            input(type="radio", name="notification")#mut
+                            label(for="mut") Mute Notifications
+                        .standard
+                            input(type="radio", name="notification", checked)#std
+                            label(for="std") Standard Notifications
+
+        .ui
+            .alert.window
+                .header Note:
+                .wrapper
+                    .headCont
+
+                    .body
+
+                button#closeAlert Ok
+            #timePicker.window
+
+    script $(document).ready(function () {[...$(".window")].forEach(item => window.vars.dragElement(item))});

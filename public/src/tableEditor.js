@@ -10,6 +10,8 @@
             window.vars.rows = Math.round(rows)
             window.vars.cols = Math.round(cols)
 
+			window.vars.anchoredMode = false;
+
 			window.vars.shiftKey = false;
 			window.vars.linkedFields = []
 
@@ -18,30 +20,64 @@
                 window.vars.table.push(new Array(window.vars.cols))
             }
 
-            $("#controls").hide();
+			$("#anchor").click(function () {
+				window.vars.anchoredMode = !window.vars.anchoredMode;
+				if (window.vars.anchoredMode === false) {
+	                $(".periodEditor").show()
+				}
+			})
+
+			$(".alert").hide();
+			$("#timePicker").hide();
+            $("#settings").hide();
             $("td").click(function () {
                 // open period properties
-				if (!window.vars.shiftKey) {
+				if (!window.vars.shiftKey && !window.vars.anchoredMode) {
 					window.vars.linkedFields.push(this)
 	                $(".periodEditor").show()
 				} else {
-					if (window.vars.linkedFields.indexOf(this) == -1) { // entity is **Not** in list
+					if (window.vars.linkedFields.indexOf(this) === -1) { // entity is **Not** in list
 						window.vars.linkedFields.push(this)
 						this.innerHTML += "&#128204;"
 						this.setAttribute("anchored", window.vars.linkedFields[0].id)
+					} else {											// if it is, remove it.
+						window.vars.linkedFields.splice(window.vars.linkedFields.indexOf(this), 1)
+						this.innerHTML = this.innerHTML.replace("📌", "")
 					}
 				}
             })
+
+			$("#saveBtn").click(function () {
+				window.vars.export();
+				window.vars.saveTable();
+			})
+			$(".toolbar h2").hide();
 			$(".periodEditor").hide()
+			$(".periodEditor .header .closeBtn").click(function () {
+				$(".periodEditor").hide();
+				window.vars.linkedFields.forEach(item => {
+					item.innerHTML = item.innerHTML.replace("📌", "")
+				})
+				window.vars.linkedFields = [];
+			})
+			$("#closeSettingsBtn").click(function () {
+				$("#settings").hide();
+				window.vars.openSettings = false;
+				// $("#showSettings").html("Show Settings")
+			})
             $("#showSettings").click(function () {
                 if (!window.vars.openSettings) {
-                    $("#controls").show();
+                    $("#settings").show();
                     window.vars.openSettings = true;
-                    $("#showSettings").html("Hide Settings")
+                    // $("#showSettings").html("Hide Settings")
+					// $("#showSettings").addClass("closeBtn")
+					$(".toolbar h2").show();
                 } else {
-                    $("#controls").hide();
+                    $("#settings").hide();
                     window.vars.openSettings = false;
-                    $("#showSettings").html("Show Settings")
+                    // $("#showSettings").html("Show Settings")
+					// $("#showSettings").removeClass("closeBtn")
+					$(".toolbar h2").hide();
                 }
             })
             $("#rows").change(function () {
@@ -53,8 +89,10 @@
                 window.vars.updateTable();
             })
 			$(".timePicker").click(function () {
-				window.vars.activePicker = this
-				window.vars.getTime();
+				window.vars.getTime(this.id==="start");
+				$("#timePicker .header .closeBtn").click(function () {
+					$("#timePicker").hide();
+				})
 			})
 			$("#save").click(function () {
 				window.vars.applyPeriod();
@@ -75,7 +113,8 @@
 
                 }
                 $("#tableBody").html(table + "</tbody>")
-				window.vars.setTdIds();
+				// window.vars.setTdIds();
+				window.vars.showTableProperly()
             }
         },
         createPeriod: function() {
@@ -88,8 +127,8 @@
             // console.log(htmlObj)
             return {
                 name: htmlObj.querySelector("#periodName").value,
-                start: htmlObj.querySelector("#start").innerHTML || "$period:",
-                end: htmlObj.querySelector("#end").innerHTML || "$period:",
+                start: window.vars.start || "$period:",
+                end: window.vars.end || "$period:",
                 location: htmlObj.querySelector("#location").value
             }
         },
@@ -98,8 +137,14 @@
 				window.vars.table[day - 1][period - 1] = inf;
 				window.vars.writePeriod(inf)
 				$(".periodEditor").hide()
+				window.vars.linkedFields.forEach(item => {
+					item.innerHTML = item.innerHTML.replace("📌", "")
+				})
+				window.vars.linkedFields = [];
+				// window.vars.setTdIds();
+				window.vars.showTableProperly()
             } else
-                alert("Not all required information was correctly entered")
+                window.vars.alert("Not all required information was correctly entered")
         },
 		writePeriod: function (inf) {
 			for (var i = 0; i < window.vars.linkedFields.length; i++) {

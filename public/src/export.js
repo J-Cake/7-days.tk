@@ -17,7 +17,7 @@
 					if (typeof periods[j] !== 'function' && typeof periods[j] !== 'number') {
 						// console.log(typeof periods[j])
 
-						var period = periods[j].getAttribute("anchored") != null || periods[j].hasChildNodes() ?
+						var period = periods[j].getAttribute("value") === null ?
 							(function () {
 								var duration = periods[j].querySelector(".duration")
 								// console.log(duration);
@@ -31,9 +31,9 @@
 										id: periods[j].id
 									}
 								} else {
-									return { cont: periods[j].innerHTML }
+									return { cont: periods[j].getAttribute("value") }
 								}
-							})() : { cont: periods[j].innerHTML };
+							})() : { cont: periods[j].getAttribute("value") };
 
 						window.vars.table[i][j] = period;
 					}
@@ -42,22 +42,26 @@
 		}
 	}
 	window.vars.saveTable = function () {
-		var obj = JSON.stringify({
+		var obj = {
 			settings: window.vars.getSettings(),
 			table: window.vars.table
-		})
-
+		}
 		console.log(obj)
-		fetch('/dashboard/save', {
-			method: 'PUT', // or 'POST'
-			body: obj, // data can be `string` or {object}!
-			headers:{
-				'X-Requested-With': 'XMLHttpRequest',
-				'Content-Type': 'application/json'
-			}
-		}).then((res => { console.log("res: " + res) /*; res.json()*/ })())
-		.catch((error => { new Error(error) })())
-		.then((response => { console.log("response: " + response) })());
+		if (obj.settings.name != "") {
+			// console.log(JSON.stringify(obj))
+			fetch('/dashboard/save', {
+				method: 'PUT', // or 'POST'
+				body: JSON.stringify(obj), // data can be `string` or {object}!
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+					'Content-Type': 'application/json'
+				}
+			}).then((res => { null })())
+			.catch((error => { window.vars.alert(error) })())
+			.then((response => { if (response) window.vars.alert(response) })());
+		} else {
+			window.vars.alert("A display name must be provided. Set it in the table settings menu by clicking the settings icon.", "Display Name Not Provided")
+		}
 	}
 	window.vars.getSettings = function () {
 		var el = $("#settings")[0],
