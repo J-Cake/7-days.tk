@@ -1,6 +1,12 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+    if error.status == 404
+        h2 Well, as it seems, the incredibly sophistocated web framework that is Express doesn't seem to be able to
+            | locate the file you have stated in that string of text under the list of tabs.
+    else
+        h2= error.status
+        pre Sorry, something doesn't work.
+        //- h1= message
+        //- h2= error.status
+        pre #{error.stack}

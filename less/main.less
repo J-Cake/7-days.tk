@@ -1,0 +1,429 @@
+@import 'less/vars.less';
+
+* {
+    box-sizing: border-box;
+}
+body {
+    overflow-y: auto;
+    background: @white;
+}
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.cont {
+    background: #89a;
+    padding: 50px;
+    form {
+        width: 35vw;
+        background: @lightColor;
+        padding: 10px;
+
+        input {
+            padding: 5px;
+            border: 1px solid @blue;
+            border-radius: 7px;
+
+            width: 100%;
+
+            margin-bottom: 8px;
+
+            box-shadow: inset 0 0 0 30px @white;
+        }
+
+        button[type="submit"] {
+            float: right;
+        }
+    }
+}
+.header {
+    background: @darkgrey;
+    display: flex;
+    width: 100%;
+    padding-left: 150px;
+    * {
+        color: @lightColor;
+        line-height: 55px;
+    }
+    > * {
+        width: 100%;
+    }
+    h1 {
+        font-weight: bold;
+        line-height: 55px;
+        vertical-align: middle;
+        img {
+            height: 30px;
+            position: relative;
+            margin-right: 10px;
+            top: 6.25px;
+        }
+    }
+    .manage {
+        width: 100%;
+        text-align: center;
+        img {
+            height: 30px;
+            position: relative;
+            margin-right: 10px;
+            top: 6.25px;
+            background: @lightColor;
+            border-radius: 100px;
+            padding: 2px;
+        }
+        .options {
+            display: none;
+            position: fixed;
+            right: 10vw;
+            background: @lightColor;
+            padding: 5px;
+            border-radius: 5px;
+            button, a {
+                width: 200px;
+                background: @lightColor !important;
+                color: @darkgrey;
+                transition: 0.25s ease;
+                line-height: 25px;
+            }
+            button:hover, a:hover {
+                text-decoration: none;
+                background: @darkgrey + #666 !important;
+            }
+            button:hover a {
+                background: @darkgrey + #666 !important;
+            }
+        }
+        .options:hover {
+            display: block;
+        }
+        .profile:hover .options {
+            display: block;
+        }
+    }
+    .manage:hover .options, options:hover {
+        display: block;
+    }
+}
+pre {
+    padding: 10px;
+}
+
+// fileUploader
+
+.boxDragndrop,
+.boxUploading,
+.boxSuccess,
+.boxError {
+  display: none;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.box.has-advanced-upload {
+    outline: 1px dashed @blue !important;
+    outline-offset: 10px;
+}
+.box.has-advanced-upload .boxDragndrop {
+    display: inline !important;
+}
+.box.is-dragover {
+  background: @darkgrey + #666 !important;
+}
+.box {
+    position: relative;
+    left: 2.5vw;
+    top: 3vh;
+    width: 150px;
+    height: 150px;
+    background: @darkgrey + #777;
+    padding: 10px;
+
+    * {
+        color: @blue !important;
+        text-align: center;
+        width: 100%;
+    }
+}
+#boxInput label {
+    width: 100%;
+    height: 100%;
+    display: block;
+    font-weight: bold;
+    padding-top: 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.box.is-uploading .boxInput {
+  visibility: none;
+}
+.box.is-uploading .boxUploading {
+  display: block;
+}
+#settings {
+    background: transparent;
+    top: 0;
+    position: relative;
+    width: 75vw;
+    left: 12.5vw;
+
+    input {
+        width: 95%;
+        border: 1px solid @blue;
+        border-radius: 5px;
+        padding: 5px;
+        box-shadow: inset 0 0 0 30px @white;
+        margin-top: 3px;
+    }
+    h3 {
+        font-size: 1.3em;
+    }
+    ul {
+        padding-left: 25px;
+        list-style-type: none !important;
+    }
+}
+ul, ol {
+    list-style-type: none;
+}
+.newTable {
+    .cont {
+        position: fixed;
+        top: 10vh;
+        width: 80vw;
+        left: 10vw;
+        border-radius: 5px;
+        h2 {
+            font-size: 1.3em;
+            margin-top: -1em;
+            color: @lightColor;
+            margin-bottom: 1em;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid @blue;
+        }
+    }
+}
+.wrapper {
+    width: 100vw;
+    // padding: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: 55px minmax(70vh, auto) 100px;
+
+    grid-template-areas: "h h" "s c" "f f";
+
+    .sidebar {
+
+        grid-area: s;
+        >* {
+            width: 100%;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+    }
+    .content {
+        grid-area: c;
+        >* {
+            width: 100%;
+        }
+        ul {
+            list-style-type: none !important;
+        }
+        #settings {
+            left: 0;
+        }
+    }
+    .header {
+        grid-area: h;
+    }
+}
+.table {
+    height: 35px;
+    .deleteBtn {
+        float: right;
+        height: 35px;
+        width: 35px;
+        text-align: center;
+        display: none;
+        cursor: pointer;
+        margin-top: -4px;
+        margin-right: 50px;
+        border-radius: 3px;
+        img {
+            height: 25px;
+            margin-top: 4px;
+        }
+    }
+    .deleteBtn:hover {
+        background: @darkgrey + #555;
+    }
+}
+.table:hover {
+    .deleteBtn {
+        display: block;
+    }
+}
+
+.footer {
+    grid-area: f;
+    footer {
+        background: @darkgrey;
+        display: flex;
+        * {
+            color: @lightColor;
+        }
+    }
+    .copyright {
+        display: flex;
+        text-align: center;
+        padding-top: 15px;
+        > * {
+            width: 100%;
+        }
+        * {
+            img:not(.logoImg) {
+                width: 20px;
+                height: 20px;
+                margin: 5px;
+            }
+            img.logoImg {
+                width: 35px;
+                height: 35px;
+            }
+        }
+        .links {
+            text-align: left;
+            a {
+                display: block;
+                float: left;
+                margin: 0 10px 0 10px;
+            }
+        }
+    }
+}
+.mainContent {
+    grid-area: c;
+}
+.header {
+    grid-area: h;
+}
+.manage#header {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    > * {
+        width: 100%;
+    }
+}
+#search {
+    padding: 7px;
+    button[type="submit"] {
+        margin-left: 0;
+    }
+    #searchBox {
+        width: 200px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: @darkgrey + #555;
+        padding: 3px;
+        box-shadow: inset 0 0 0 300px @white;
+    }
+}
+article {
+    img {
+        width: 75%;
+        display: block;
+        position: relative;
+        margin: 10px 0 10px 0;
+        box-shadow: 0 0 3px 3px @darkgrey + #555;
+    }
+}
+.indent {
+    padding-left: 25px;
+}
+h1 {
+    font-size: 1.3em;
+}
+.blockquote {
+    border-left: 6px solid @darkgrey + #aaa;
+    color: @darkgrey;
+    font-weight: 200;
+    background: @darkgrey + #777;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: block;
+    width: 75%;
+}
+.code, code {
+    font-family: "Consolas", "Courier New", monospace;
+    color: @blue;
+    display: inline;
+}
+.displayWrapper {
+    position: fixed;
+    background: @darkgrey;
+    padding: 15px;
+    width: 90vw;
+    top: 50%;
+    left: 50%;
+    transform: perspective(1px) translateY(-50%) translateX(-50%);
+    img#imgDisplay {
+        display: block;
+        top: 2.5%;
+        left: 2.5%;
+        width: 95%;
+    }
+}
+.closeBtn {
+    display: block;
+    border-radius: 15px;
+    overflow: hidden;
+    max-width: 5px;
+    min-width: 5px;
+    width: 5px !important;
+    height: 5px !important;
+    background: #E53935;
+    color: transparent;
+    position: absolute;
+    right: 10px;
+    font-size: 1px;
+    padding: 7.5px;
+    top: calc((7px + 7pt) - 10px);
+}
+.closeBtn:hover {
+    cursor: pointer;
+    background: #E53935 - #111;
+}
+.closeBtn:active {
+    background: #E53935 - #422;
+}
+b {
+    font-weight: bold;
+}

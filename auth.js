@@ -2,6 +2,7 @@
 module.exports = (function () {
     var db = require("krakendb");
     var ne = require("node-encrypt");
+	var fs = require("fs")
 
     process.env.ENCRYPTION_KEY = '3a2de17ae6bd50361af8fb43e3076195';
 
@@ -10,7 +11,7 @@ module.exports = (function () {
     if (db.dbexists("users")) {
         db.loaddb("users");
     } else {
-        db.newdb("users", ["un", "pw", "userid"]);
+        db.newdb("users", ["email", "pw", "theme", "day"]);
         db.exportdb();
     }
 
@@ -29,6 +30,29 @@ module.exports = (function () {
 			return 4;
 		}
     }
+	funcs.signup = function (un, email, pw, pc) {
+		if (!db.indb(un) && !db.indb(email)) {
+			if (pw == pc) {
+				ne.encrypt({ text: pw }, (err, password) => {
+					if (err)
+						return "An error occured.";
+					console.log(password)
+					db.push(un, [email, password, 1]);
+					if (db.getItem(un, 'pw') == null)
+						db.setItem(un, 'pw', password)
+					db.exportdb();
+				});
+				try {
+					fs.mkdirSync(`./tables/${un}`)
+				} catch { null; }
+				return 1;
+			} else {
+				return "Passwords don't match.";
+			}
+		} else {
+			return "The Username or Email is taken.";
+		}
+	}
 
     return funcs;
 

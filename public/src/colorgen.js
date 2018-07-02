@@ -1,18 +1,18 @@
 (function () {
-	// window.vars.randomColour = function () {
-	// 	// window.vars.colors = window.vars.colors || ["#17327a", "#4bccdf", "#42d3cc", "#0359f9", "#74afea", "#021a5f", "#051fa0", "#024661", "#7456ec", "#55bcf7"]
-	// 	// return window.vars.colors.pop()
-	//
-	// }
 	window.vars.randomColour = function () {
-		var color = "";
-
-		color += "024"[Math.floor(Math.random() * 3)];
-		color += "024"[Math.floor(Math.random() * 3)];
-		color += "024"[Math.floor(Math.random() * 3)];
-		color += "024"[Math.floor(Math.random() * 3)];
-		color += "9be"[Math.floor(Math.random() * 3)];
-		color += "9be"[Math.floor(Math.random() * 3)];
-		return "#" + color;
+		var colors = ['818181', '747474', '7C7C7C', 'A6A6A6', '606060', '56595F', '56595F', 'B9BBBE', '9B9DA1', '7A7D81']
+		// return "#" + colors[Math.floor(Math.random() * colors.length)]
+		return "#aaa";
 	}
-})();
+	// window.vars.randomColour = function () {
+	// 	var color = "";
+	//
+	// 	color += "024"[Math.floor(Math.random() * 3)];
+	// 	color += "024"[Math.floor(Math.random() * 3)];
+	// 	color += "024"[Math.floor(Math.random() * 3)];
+	// 	color += "024"[Math.floor(Math.random() * 3)];
+	// 	color += "9be"[Math.floor(Math.random() * 3)];
+	// 	color += "9be"[Math.floor(Math.random() * 3)];
+	// 	return "#" + color;
+	// }
+})()

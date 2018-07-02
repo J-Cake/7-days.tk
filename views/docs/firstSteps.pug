@@ -1,0 +1,65 @@
+extends ../layout
+
+block content
+    article
+        | If you have not already, click 
+        a(href="/signup") here 
+        | to create a free account. 
+        br
+        | Once you have created your account, you will be redirected to your dashboard.
+        br
+        | Here you can view and manage all your time tables. All the tables you have created will be listed here.
+        br
+        img(src='/hostedImages/dashboard.png', alt="Dashboard")
+        | The tables will be listed above the 
+        i New Table 
+        | Button.
+        br
+        | To begin, click the 
+        i New Table 
+        | Button. You will see a prompt. Enter all information and click 
+        i Create Table.
+        img(src="/hostedImages/createTable.png")
+        | You can have between 1 and 20 rows / columns in your table.
+        br
+        | Once you click 
+        i Create Table,
+        | you will be brought to an editor.
+        br
+        | If this does not occur, press 
+        .code F5 
+        | ,
+        .code CTRL + R 
+        | or the refresh button on your browser's toolbar.
+        br
+        | Once in the editor, you will be greeted with a blank table.
+        img(src="/hostedImages/editor.png")
+        | Clicking on any field will open a window that can be moved around for your convenience.
+        br
+        | Here you can enter the information about the field. For example, you are required at 15:45 at office number 12 every Thursday.
+        br
+        | In order for you to be able to get notifications every Thursday, you will need to specify how many days a week you work, typically 5,
+        br
+        | Click the settings wheel in the toolbar to change the table settings
+        img(src="/hostedImages/settings.png")
+        | You might have a conference daily at 7:00 to 12:00, So you would include this as a "period".
+        br
+        | The 
+        b Rows 
+        .code (→)
+        |  field 
+        b must 
+        | contain the days of your table, as the software assumes that you have entered the days in this place.
+        br
+        b Cols 
+        .code (↓)
+        b  must 
+        | contain the periods, for the same reason as above.
+        br
+        | Check all days that you work using the switches in the settings menu.
+        | If today is checked, say today is Tuesday, you will recieve a notification alerting you when you have what.
+        br
+        | If it is not, you will recieve no notifications and the table will pause until tomorrow, the cycle continues,
+        | until the table has no longer any days left. If this occurs, the table will begin from Day 1 again.
+        br
+        | This will continue indefinately, or at least until you delete - or mute - the table.

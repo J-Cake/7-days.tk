@@ -1,0 +1,54 @@
+extends layout
+
+block content
+    script(src='/src/myaccount.js')
+    
+    .content
+        #settings
+            h3 Profile Picture
+            div(class="fileUpload box")
+                div#boxInput
+                    input(type="file", accept="image/*", onchange="window.vars.droppedFile = this.files[0]").boxFile#file
+                    label(for="file")
+                        strong Choose a file 
+                        span.boxDragndrop or drag it here
+                div.boxUploading Uploading&hellip;
+                div.boxSuccess Done!
+                div.boxError Error!
+                    span
+                    | .
+            
+            br
+            br
+            .un
+                h3(for="un") Username
+                input#un
+            .email
+                h3(for="email") Email
+                input(type="email")#email
+            .pw
+                h3(for="pw") Password
+                input(type="password")#pw
+            br
+            .theme
+                h3 Theme
+                ul
+                    //- span themeid = #{theme}
+                    input(type="radio", name="theme", checked=theme==1)#blue.themeBtn
+                    label(for="blue") Blue
+                    br
+                    input(type="radio", name="theme", checked=theme==2)#pink.themeBtn
+                    label(for="pink") Pink
+                    br
+                    input(type="radio", name="theme", checked=theme==3)#green.themeBtn
+                    label(for="green") Green
+                    br
+                    input(type="radio", name="theme", checked=theme==4)#orange.themeBtn
+                    label(for="orange") Darker Green
+                    br
+                    input(type="radio", name="theme", checked=theme==5)#red.themeBtn
+                    label(for="red") Red
+                    
+            button#save Save Changes
+
+    script window.vars.init();

@@ -1,11 +1,79 @@
 extends layout
 
 block content
-    pre login successful
-    form(method="post", action="/logout")
-        button(yupe="submit") Log Out
-
-    ul
+    ul#tableList
         each item in tables
-            li
+            li.table
                 a(href="/dashboard/" + item)=item
+                span(value=item).deleteBtn
+                    img(src="/res/delete.png")
+
+        .newTable
+            button.newTableBtn New Table
+            script.
+                $(".newTableBtn").click(function () {
+                    $(".cont").show();
+                    $(".newTableBtn").hide();
+                })
+            .cont
+                h2 New Table
+                label(for="tableName") Display Name
+                input(type="text", placeholder="Table Name")#tableName
+                br
+                br
+                label(for="rows") Days
+                input(type="number", placeholder="Rows", min="1", max="20", value="5")#rows
+                br
+                br
+                label(for="cols") Periods
+                input(type="number", placeholder="Cols", min="1", max="20", value="8")#cols
+                button#createNewTable Create Table
+                button#cancel Cancel
+            script.
+                $(".cont").hide();
+            
+            script.
+                $(document).ready(function () {
+                    $("#createNewTable").click(function () {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('post', '/newTable', true);
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.setRequestHeader("Content-type", "application/json");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                window.location.href = "/dashboard/" + $("#tableName").val();
+                            }
+                        }
+                        var val = JSON.stringify({
+                            name: $("#tableName").val(),
+                            rows: $("#rows").val(),
+                            cols: $("#cols").val()
+                        })
+                        if (val) {
+                            xhr.send(val)
+                            $(".cont").hide();
+                            $(".newTableBtn").show();
+                        } else
+                            console.log(val)
+                    })
+                })
+            script.
+                $("#cancel").click(function () {
+                    $(".cont").hide();
+                    $(".newTableBtn").show();
+                })
+
+    script.
+        $(document).ready(() => {
+            (function () {
+                console.log("adding listener")
+                $(".table .deleteBtn").click(function () {
+                    if (confirm("Are you sure you want to delete this table? This action cannot be undone.")) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("put", '/dashboard/deleteTable', true);
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.send(JSON.stringify({table: this.getAttribute('value')}))
+                    }
+                })
+            })()
+        })

@@ -1,13 +1,43 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/css/master.css')
-    //- link(rel='stylesheet', href="/css/controls.css")
-    
-    link(href="https://fonts.googleapis.com/css?family=Roboto:300", rel="stylesheet")
-    
-    script(src="/src/lib/jquery.min.js")
-  body
-    .wrapper
-      block content
+    head
+        title= title
+        link(rel='stylesheet', href='/css/master.css')
+        link(rel='stylesheet', href='/css/main.css')
+        link(href="https://fonts.googleapis.com/css?family=Roboto:300", rel="stylesheet")
+        script(src="/src/lib/jquery.min.js")
+        link(rel="icon", href="/res/icon.png")
+        
+        script (function () {window.vars = {}})()
+        script(src="/src/index.js", defer="true")
+    body
+        .wrapper
+            .header
+                if (signedIn)
+                    include ./header.pug
+                else
+                    include ./header2.pug
+                    
+            .sideBar
+                include ./sidebar.pug
+            .mainContent
+                block content
+                script.
+                    $("article img").click(function () {
+                        console.log(this)
+                        $("img#imgDisplay")[0].setAttribute('src', this.getAttribute("src"))
+                        $('.displayWrapper').show();
+                    })
+            footer.footer
+                include ./footer.pug
+            
+            .displayWrapper
+                button.closeBtn
+                    
+                script.
+                    $(".closeBtn").click(function () {
+                        $(".displayWrapper").hide()
+                    })
+                img#imgDisplay
+            
+            script $(".displayWrapper").hide()

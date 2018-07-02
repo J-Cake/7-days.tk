@@ -1,0 +1,7 @@
+extends ../layout.pug
+
+block content
+    ul
+        each item in docPages
+            li
+                a(href="/docs/" + item.url)=item.text

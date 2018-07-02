@@ -107,21 +107,42 @@
                 for (var i = 0; i < window.vars.rows; i++) {
                     var row = "<tr>"
                     for (var j = 0; j < window.vars.cols; j++) {
-                        row += "<td></td>"
+                        row += "<td><b class=\"name\"></b><br><span class=\"duration\"> - </span><br><span class=\"location\"></span></td>"
                     }
                     table += row + "</tr>"
 
                 }
                 $("#tableBody").html(table + "</tbody>")
-				// window.vars.setTdIds();
 				window.vars.showTableProperly()
+				window.vars.setTdIds();
+
+				$("td").click(function () {
+	                // open period properties
+					if (!window.vars.shiftKey && !window.vars.anchoredMode) {
+						window.vars.linkedFields.push(this)
+		                $(".periodEditor").show()
+					} else {
+						if (window.vars.linkedFields.indexOf(this) === -1) { // entity is **Not** in list
+							window.vars.linkedFields.push(this)
+							this.innerHTML += "&#128204;"
+							this.setAttribute("anchored", window.vars.linkedFields[0].id)
+						} else {											// if it is, remove it.
+							window.vars.linkedFields.splice(window.vars.linkedFields.indexOf(this), 1)
+							this.innerHTML = this.innerHTML.replace("📌", "")
+						}
+					}
+	            })
             }
         },
         createPeriod: function() {
             $(".periodEditor").show()
         },
         applyPeriod: function() {
-            window.vars.addToPeriod(window.vars.convertToJSON($(".periodEditor")[0]), 1, 1);
+			window.vars.addToPeriod(window.vars.convertToJSON($(".periodEditor")[0]), 1, 1);
+			$("#periodName").val("")
+			$("#location").val("")
+			$("#start").text("")
+			$("#end").text("")
         },
         convertToJSON: function(htmlObj) {
             // console.log(htmlObj)
@@ -168,6 +189,11 @@ $(document).ready(function () {
 window.addEventListener('keydown', e => {
 	if (e.keyCode == 16) {
 		window.vars.shiftKey = true;
+	} else if (e.keyCode == 27) {
+		$(".periodEditor").hide()
+		$("#timePicker").hide();
+		$("#settings").hide();
+		window.vars.openSettings = false;
 	}
 })
 window.addEventListener('keyup', e => {

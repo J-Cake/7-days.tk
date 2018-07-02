@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    pre=errors
+    .cont
+        form(action="/signup", method="post")
+            input(type="text", name="un", placeholder="User name")
+            input(type="email", name="email", placeholder="Email")
+            input(type="password", name="pw", placeholder="Password")
+            input(type="password", name="pc", placeholder="Confirm Password")
+
+            .links
+                button(type="submit") Log In
+                a(href="/") Already have an account?
+                br
