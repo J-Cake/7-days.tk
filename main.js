@@ -234,8 +234,13 @@ module.exports = (function () {
 				day.forEach(period => {
 					if (period.cont) {
 						var id = period.cont.split('#')[1] || period.cont.substring(5)
-						console.log(funcs.getPeriodById(id, table.table))
+						var p = funcs.getPeriodById(id, table.table)
 						// console.log(period.cont)
+						if (p !== 0) {
+							if (funcs.betweenTimes(p.start, p.end)) {
+								periods.push(JSON.stringify({ title: p.name, subjectName: p.name, location: p.location }))
+							}
+						}
 					} else {
 						if (period.start == "$period:" && period.end == "$period:") {
 							var times = funcs.getPeriodTimes(period.id, table.table)
@@ -249,6 +254,8 @@ module.exports = (function () {
 				})
 			})
 		})
+
+		return periods;
 	}
 	funcs.betweenTimes = function (startTime, endTime) {
 		if (startTime != "$period" && endTime != "$period") {
@@ -309,8 +316,7 @@ module.exports = (function () {
 			}
 		}
 		if (!broken) {
-			console.log("not found: " + id)
-			return 'not found ' + id
+			return 0
 		}
 		if (p)
 			return p
