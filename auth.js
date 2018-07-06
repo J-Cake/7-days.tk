@@ -37,7 +37,7 @@ module.exports = (function () {
 					if (err)
 						return "An error occured.";
 					console.log(password)
-					db.push(un, [email, password, 1]);
+					db.push(un, [email, password, 1, 1]);
 					if (db.getItem(un, 'pw') == null)
 						db.setItem(un, 'pw', password)
 					db.exportdb();

@@ -162,66 +162,6 @@ module.exports = (function () {
 		})
 		return pageList
 	}
-	// funcs.getPayload = function (user) {
-	// 	try {
-	// 		var tables = []
-	// 		// parse each table as JSON
-	// 		fs.readdirSync(`tables/${user}`).forEach(item => { if (item.substring(item.length - 4) == "json") tables.push(JSON.parse(fs.readFileSync(`tables/${user}/${item}`))) })
-	// 		// check for period change
-	// 		var subjects = []
-	// 		tables.forEach(item => {
-	// 			var periods = item.table[(Math.round(db.getItem(user, 'days')) % item.table.length) - 1]
-	// 			// console.log(periods)
-	// 			periods.forEach(period => {
-	// 				var periodInfo;
-	// 				if (period.cont) {
-	// 					var id = Math.round(period.cont.split("#")[1])
-	// 					item.table.forEach(day => {
-	// 						day.forEach((loopPeriod, index) => {
-	// 							if (loopPeriod.id == id) {
-	// 								periodInfo = loopPeriod;
-	// 								periodInfo.period = index
-	// 								// retrieve period information in case it's an anchored period
-	// 							}
-	// 						})
-	// 					})
-	// 				} else {
-	// 					periodInfo = period;
-	// 					// if it is not an achored period, use the period as-is
-	// 					periodInfo.period = periods.indexOf(periodInfo)
-	// 					// append periodIndex
-	// 				}
-	// 				// console.log(periodInfo)
-	// 				if (periodInfo) {
-	// 				// console.log(periodInfo)
-	// 					var betweenTimes = funcs.betweenTimes(periodInfo.start, periodInfo.end)
-	// 					// check to make sure that the current period is active at the moment.
-	// 					var info
-	// 					if (betweenTimes) {
-	// 						info = JSON.stringify({ title: periodInfo.name, subjectName: periodInfo.name, location: periodInfo.location })
-	// 					} else {
-	// 						item.table[periodInfo.period].forEach(periodBlock => {
-	// 							if (periodBlock.start != "$period")
-	// 								periodInfo.start = periodBlock.start
-	// 							if (periodBlock.end != "$period")
-	// 								periodInfo.end = periodBlock.end
-	//
-	// 							// fixed "$period". records period index and scans all periods of same index for start / end times.
-	// 						})
-	// 						if (periodInfo.start == "$period" || periodInfo.end == "$period") {
-	// 							return "a period time was not provided."
-	// 						}
-	// 					}
-	// 					return info
-	// 				}
-	// 			})
-	// 			// subjects.push(periods)
-	// 		})
-	//
-	// 	} catch (e) {
-	// 		console.log(e)
-	// 	}
-	// }
 	funcs.getPayload = function (user) {
 		var periods = [];
 		// stores the periods that will be printed in the notifiction.
@@ -235,7 +175,6 @@ module.exports = (function () {
 					if (period.cont) {
 						var id = period.cont.split('#')[1] || period.cont.substring(5)
 						var p = funcs.getPeriodById(id, table.table)
-						// console.log(period.cont)
 						if (p !== 0) {
 							if (funcs.betweenTimes(p.start, p.end)) {
 								periods.push(JSON.stringify({ title: p.name, subjectName: p.name, location: p.location }))
@@ -259,8 +198,8 @@ module.exports = (function () {
 	}
 	funcs.betweenTimes = function (startTime, endTime) {
 		if (startTime != "$period" && endTime != "$period") {
-			var start = Math.round(startTime.split(":")[0] + "." + startTime.split(":")[1])
-			var end = Math.round(endTime.split(':')[0] + "." + startTime.split(':')[1])
+			var start = Number(startTime.split(":")[0] + "." + startTime.split(":")[1])
+			var end = Number(endTime.split(':')[0] + "." + startTime.split(':')[1])
 		} else {
 			return "0";
 		}
@@ -297,13 +236,10 @@ module.exports = (function () {
 				break;
 			}
 		}
-		// console.log(p)
 		return { start:p.start == "$period:" ? "" : p.start, end:p.end == "$period:" ? "" : p.end }
 	}
-	// returns day times rather than periods.
 	funcs.getPeriodById = function (period, table) {
 		var id = Math.round(period) + ''
-		// console.log(id)
 		var p;
 		var broken = false
 		for (var i in table) {

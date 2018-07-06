@@ -16,7 +16,10 @@ var title = "7-days.io";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title, errors: req.session.errors });
+	if (req.session.signedIn)
+		res.render('index', { title, username: req.session.user, signedIn: req.session.signedIn, errors: req.session.errors });
+	else
+		res.render('index', { title, errors: req.session.errors });
 });
 router.post('/', function (req, res) {
 	var login = auth.login(req.body.un, req.body.pw)
@@ -145,6 +148,28 @@ router.get('/docs/:page', function (req, res) {
 	res.render('docs/' + req.params.page, { title, username: req.session.user, signedIn: req.session.signedIn })
 })
 
+var publicKey = "BHDjHOFgmu8QMhhGc43Q9kffe8dYPG5ECFcooxH4b08H8d2WQRh927fPAO6hwsRkoMkRq6CP0ADyFrtTJTIzGsI"
+var privateKey = "b5Yq5a8zALsI-Uiro7IIth9jiqhKxaIYM66R_SpaZ_Y"
+webpush.setVapidDetails('mailto:jakieschneider13@gmail.com', publicKey, privateKey)
+
+router.post('/subscribe', function (req, res) {
+	// get push sub obj
+	console.log(req.session)
+	if (req.session.signedIn) {
+		var subscription = req.body
+		var payload = JSON.stringify(main.getPayload(req.session.user))
+		// console.log(payload)
+		res.status(201).json({});
+		webpush.sendNotification(subscription, /* payload */ "hello world", { headers: { "content-type":"application/json" }})
+		.then(value => {
+			console.log(value)
+		})
+		.catch(err => console.error(err))
+	} else {
+		res.status(200).json({})
+	}
+})
+
 // static files
 
 router.get('/css/master.css', function (req, res) {
@@ -185,20 +210,8 @@ router.get('/hostedImages/:image', function (req, res) {
 	res.send(fs.readFileSync(`./hostedImages/${img}`))
 })
 
-var publicKey = "BHDjHOFgmu8QMhhGc43Q9kffe8dYPG5ECFcooxH4b08H8d2WQRh927fPAO6hwsRkoMkRq6CP0ADyFrtTJTIzGsI"
-var privateKey = "b5Yq5a8zALsI-Uiro7IIth9jiqhKxaIYM66R_SpaZ_Y"
-webpush.setVapidDetails('mailto:jakieschneider13@gmail.com', publicKey, privateKey)
-
-router.post('/subscribe', function (req, res) {
-	// get push sub obj
-	if (req.session.signedIn) {
-		var subscription = req.body
-		var payload = main.getPayload(req.session.user);
-		res.status(201).json({});
-		webpush.sendNotification(subscription, payload).catch(err => console.error(err))
-	} else {
-		res.status(200).json({})
-	}
+router.get('/tmp/tanks.zip', (req, res) => {
+	res.send(fs.readFileSync("C:/Users/Jacob/Desktop/Tanks.zip"))
 })
 
 module.exports = router;

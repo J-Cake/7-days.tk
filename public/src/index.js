@@ -30,7 +30,11 @@ $(document).ready(function () {
 				"X-Requested-With": "XMLHttpRequest",
 				"Content-Type": "application/json"
 			}
-		})
+		})/*.then(res => {
+			return res.text().then(text => {
+				console.log(text)
+			})
+		})*/
 	}
 
 	if ('serviceWorker' in navigator) {
