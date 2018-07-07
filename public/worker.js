@@ -1,8 +1,10 @@
 self.addEventListener('push', e => {
-	var data = e.data.json()
-	console.log("data: " + data)
-	self.registration.showNotification(data.title, {
-		body: "You now have " + data.subjectName + " at " + data.location,
-		icon: '/res/logo.png'
-	})
+	var data = e.data
+	console.log(data)
+	if (data.title && data.subjectName && data.location) {
+		self.registration.showNotification(data.title, {
+			body: "You now have " + data.subjectName + " at " + data.location,
+			icon: '/res/logo.png'
+		})
+	}
 })

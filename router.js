@@ -12,7 +12,9 @@ var webpush = require('web-push');
 
 var bodyParser = require('body-parser')
 
-var title = "7-days.io";
+var logmaker = require('logmaker');
+
+var title = "7-days.tk";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -23,7 +25,7 @@ router.get('/', function(req, res, next) {
 });
 router.post('/', function (req, res) {
 	var login = auth.login(req.body.un, req.body.pw)
-	console.log(login)
+	logmaker.log(login)
 	req.session.user = req.body.un;
 	req.session.signedIn = login === 2;
 	req.session.fromSignup = false;
@@ -42,7 +44,7 @@ router.get('/signup', function (req, res) {
 })
 router.post('/signup', function(req, res) {
 	var signup = auth.signup(req.body.un, req.body.email, req.body.pw, req.body.pc);
-	console.log(signup)
+	logmaker.log(signup)
 	req.session.user = req.body.un;
 	req.session.signedIn = signup == 1;
 	req.session.fromSignup = true;
@@ -57,9 +59,14 @@ router.post('/signup', function(req, res) {
 })
 
 router.get('/dashboard', function (req, res) {
-	if (req.session.signedIn)
-		res.render("dashboard", { title, tables: main.getTables(req.session.user), username: req.session.user, signedIn: true })
-	else {
+	if (req.session.signedIn) {
+		if (main.whitelist.indexOf(req.session.user) > -1) {
+			res.render("dashboard", { title, tables: main.getTables(req.session.user), username: req.session.user, signedIn: true })
+		} else {
+			req.session.signedIn = false;
+			res.render("development", { title })
+		}
+	} else {
 		if (req.session.fromSignup)
 			res.redirect('/signup')
 		else
@@ -92,7 +99,7 @@ router.put('/dashboard/deleteTable', function (req, res) {
 			main.deleteTable(req.session.user, req.body.table)
 			res.send('1')
 		} catch (e) {
-			console.log(e)
+			logmaker.log(e)
 		}
 	}
 })
@@ -148,23 +155,23 @@ router.get('/docs/:page', function (req, res) {
 	res.render('docs/' + req.params.page, { title, username: req.session.user, signedIn: req.session.signedIn })
 })
 
-var publicKey = "BHDjHOFgmu8QMhhGc43Q9kffe8dYPG5ECFcooxH4b08H8d2WQRh927fPAO6hwsRkoMkRq6CP0ADyFrtTJTIzGsI"
-var privateKey = "b5Yq5a8zALsI-Uiro7IIth9jiqhKxaIYM66R_SpaZ_Y"
+var publicKey = "BPKB6MzMh3GCxBSHY3LqwFJ0SOJIXBssaEpezIC4WHstHORnyuvUSZxzbyc9CXs8gB031B3tWnduJnT_7oRlFDA"
+var privateKey = "9f1q9EsqJnN35M4t38rEYqEdIijeHP7iSt7UgGeKwPo"
 webpush.setVapidDetails('mailto:jakieschneider13@gmail.com', publicKey, privateKey)
 
 router.post('/subscribe', function (req, res) {
 	// get push sub obj
-	console.log(req.session)
+	// logmaker.log(req.session)
 	if (req.session.signedIn) {
 		var subscription = req.body
-		var payload = JSON.stringify(main.getPayload(req.session.user))
-		// console.log(payload)
+		logmaker.log(subscription)
 		res.status(201).json({});
-		webpush.sendNotification(subscription, /* payload */ "hello world", { headers: { "content-type":"application/json" }})
-		.then(value => {
-			console.log(value)
-		})
-		.catch(err => console.error(err))
+
+		// var payload = JSON.stringify(main.getPayload(req.session.user))
+		var payload = JSON.stringify({title: "hello world"})
+
+		webpush.sendNotification(subscription, payload)
+		.catch(err => logmaker.log(err))
 	} else {
 		res.status(200).json({})
 	}
@@ -184,7 +191,7 @@ router.get('/css/master.css', function (req, res) {
 	}
 	less.render(input, options, function (err, result) {
 		if (err) {
-			console.log(err)
+			logmaker.log(err)
 		} else {
 			res.send(result.css)
 		}
@@ -206,12 +213,12 @@ router.get('/css/main.css', function (req, res) {
 })
 router.get('/hostedImages/:image', function (req, res) {
 	var img = req.params.image
-	console.log(img)
+	logmaker.log(img)
 	res.send(fs.readFileSync(`./hostedImages/${img}`))
 })
 
-router.get('/tmp/tanks.zip', (req, res) => {
-	res.send(fs.readFileSync("C:/Users/Jacob/Desktop/Tanks.zip"))
-})
+// router.get('/tmp/tanks.zip', (req, res) => {
+// 	res.send(fs.readFileSync("C:/Users/Jacob/Desktop/Tanks.zip"))
+// })
 
 module.exports = router;

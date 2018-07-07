@@ -14,14 +14,14 @@ $(document).ready(function () {
 		return outputArray;
 	}
 
-	window.vars.publicKey = "BHDjHOFgmu8QMhhGc43Q9kffe8dYPG5ECFcooxH4b08H8d2WQRh927fPAO6hwsRkoMkRq6CP0ADyFrtTJTIzGsI"
+	window.vars.key = "BPKB6MzMh3GCxBSHY3LqwFJ0SOJIXBssaEpezIC4WHstHORnyuvUSZxzbyc9CXs8gB031B3tWnduJnT_7oRlFDA"
 
 	window.vars.send = async function () {
 		console.log('executing send function')
-		var register = await navigator.serviceWorker.register('/worker.js', {scope:'/'})
+		var register = await navigator.serviceWorker.register('/worker.js', {scope:'/dashboard'})
 		var subscription = await register.pushManager.subscribe({
 			userVisibleOnly: true,
-			applicationServerKey: window.vars.urlBase64ToUint8Array(window.vars.publicKey)
+			applicationServerKey: window.vars.urlBase64ToUint8Array(window.vars.key)
 		})
 		await fetch ('/subscribe', {
 			method: 'post',

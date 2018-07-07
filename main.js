@@ -42,7 +42,7 @@ module.exports = (function () {
         return JSON.parse(fs.readFileSync("tables/" + user + "/" + tableName + ".json"))
     }
 	funcs.saveTable = function(user, table) {
-		// console.log(table.settings)
+		// logmaker.log(table.settings)
 		if (table.settings.name) {
 			var response = ""
 			try {
@@ -80,7 +80,7 @@ module.exports = (function () {
 				ne.encrypt({ text: body.pw }, (err, password) => {
 					if (err)
 						return "An error occured.";
-					console.log(body.theme)
+					logmaker.log(body.theme)
 					db.push(body.un, [body.email || prevInfo[1], password || prevInfo[2], body.theme || prevInfo[3] || 1])
 					db.exportdb()
 					db.loaddb('users')
@@ -124,7 +124,7 @@ module.exports = (function () {
 			}
 			fs.writeFileSync(`tables/${user}/${table.name}.json`, JSON.stringify(dat))
 		} catch (e) {
-			// console.log(e)
+			// logmaker.log(e)
 			return e
 		}
 	}
@@ -156,7 +156,7 @@ module.exports = (function () {
 				var doc = { text: item.slice(0, item.length - 4), url: item.substring(0, item.length - 4)}
 				doc.text = doc.text.replace(/([A-Z])/g, ' $1').trim();
 				doc.text = doc.text[0].toUpperCase() + doc.text.substring(1)
-				console.log(doc)
+				logmaker.log(doc)
 				pageList.push(doc)
 			}
 		})
@@ -238,6 +238,7 @@ module.exports = (function () {
 		}
 		return { start:p.start == "$period:" ? "" : p.start, end:p.end == "$period:" ? "" : p.end }
 	}
+	funcs.whitelist = ["KlaussMC", "demonstation"];
 	funcs.getPeriodById = function (period, table) {
 		var id = Math.round(period) + ''
 		var p;

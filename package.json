@@ -15,6 +15,7 @@
     "http-errors": "~1.6.2",
     "krakendb": "^1.5.1",
     "less": "^3.0.4",
+    "logmaker": "^1.2.1",
     "morgan": "~1.9.0",
     "node-encrypt": "^1.1.0",
     "pug": "2.0.0-beta11",

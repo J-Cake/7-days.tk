@@ -3,6 +3,7 @@ module.exports = (function () {
     var db = require("krakendb");
     var ne = require("node-encrypt");
 	var fs = require("fs")
+	var logmaker = require('logmaker')
 
     process.env.ENCRYPTION_KEY = '3a2de17ae6bd50361af8fb43e3076195';
 
@@ -18,7 +19,7 @@ module.exports = (function () {
     funcs.login = function (un, pw) {
 		if (db.indb(un)) {
 			var pass = 1;
-			// console.log("checking passwords")
+			// logmaker.log("checking passwords")
 			ne.decrypt({ cipher: db.getItem(un, 'pw') }, (err, plaintext) => {
 				pass = plaintext === pw ? 2 : 3;
 			})
@@ -36,7 +37,7 @@ module.exports = (function () {
 				ne.encrypt({ text: pw }, (err, password) => {
 					if (err)
 						return "An error occured.";
-					console.log(password)
+					logmaker.log(password)
 					db.push(un, [email, password, 1, 1]);
 					if (db.getItem(un, 'pw') == null)
 						db.setItem(un, 'pw', password)
