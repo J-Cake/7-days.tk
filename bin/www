@@ -6,20 +6,37 @@
 
 var app = require('../app');
 var debug = require('debug')('7-days.io:server');
-var http = require('http');
+var https = require('https');
+var fs = require('fs')
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var key = fs.readFileSync('.well-known/certificates/private.key', 'utf8');
+var cert = fs.readFileSync('.well-known/certificates/certificate.crt', 'utf8');
+var ca = fs.readFileSync('.well-known/certificates/ca_bundle.crt', 'utf8');
+var credentials = { key, cert, ca };
+
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Route HTTP traffic to HTTPS
  */
 
-var server = http.createServer(app);
+var http = require('http');
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
+
+/**
+ * Create https server.
+ */
+
+var server = https.createServer(credentials, app);
+// var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -50,7 +67,7 @@ function normalizePort(val) {
 }
 
 /**
- * Event listener for HTTP server "error" event.
+ * Event listener for https server "error" event.
  */
 
 function onError(error) {
@@ -78,7 +95,7 @@ function onError(error) {
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * Event listener for https server "listening" event.
  */
 
 function onListening() {

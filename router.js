@@ -216,6 +216,9 @@ router.get('/hostedImages/:image', function (req, res) {
 	logmaker.log(img)
 	res.send(fs.readFileSync(`./hostedImages/${img}`))
 })
+// router.get('/.well-known/acme-challenge/:file', (req, res) => {
+// 	res.send(fs.readFileSync('./.well-known/acme-challenge/' + req.params.file))
+// })
 
 // router.get('/tmp/tanks.zip', (req, res) => {
 // 	res.send(fs.readFileSync("C:/Users/Jacob/Desktop/Tanks.zip"))
