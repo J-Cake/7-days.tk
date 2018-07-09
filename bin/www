@@ -24,12 +24,12 @@ app.set('port', port);
 /**
  * Route HTTP traffic to HTTPS
  */
-
-var http = require('http');
-http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
-}).listen(80);
+ var http = require('http');
+ http.createServer(function (req, res) {
+	 console.log(req)
+	 res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+	 res.end();
+ }).listen(80);
 
 /**
  * Create https server.

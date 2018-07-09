@@ -45,7 +45,9 @@ module.exports = (function () {
 				});
 				try {
 					fs.mkdirSync(`./tables/${un}`)
-				} catch (e) { null; }
+				} catch (e) {
+					null;
+				}
 				return 1;
 			} else {
 				return "Passwords don't match.";
