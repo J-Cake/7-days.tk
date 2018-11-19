@@ -17,7 +17,6 @@ $(document).ready(function () {
 	window.vars.key = "BPKB6MzMh3GCxBSHY3LqwFJ0SOJIXBssaEpezIC4WHstHORnyuvUSZxzbyc9CXs8gB031B3tWnduJnT_7oRlFDA"
 
 	window.vars.send = async function () {
-		console.log('executing send function')
 		var register = await navigator.serviceWorker.register('/worker.js', {scope:'/dashboard'})
 		var subscription = await register.pushManager.subscribe({
 			userVisibleOnly: true,

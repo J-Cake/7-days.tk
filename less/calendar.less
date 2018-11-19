@@ -1,0 +1,99 @@
+@import 'less/vars.less';
+
+@width: 150px;
+
+body {
+    overflow: hidden;
+    .mainContent {
+        overflow-x: auto !important;
+        .calendarTable {
+            width: calc(52 * @width + 1px);
+            .calendarEditor {
+                padding: 2px;
+                margin: 2px;
+                display: block;
+                .layer {
+                    background: @darkgrey !important;
+                    display: block;
+                    .week {
+                        padding: 3px;
+                        background: @darkgrey + #999;
+                        margin: 1px;
+                        width: @width;
+                        display: block;
+                        color: @darkgrey;
+                        float: left;
+                        height: 50px;
+                        line-height: 50px;
+                    }
+                }
+                .layer:nth-child(odd) .week {
+                    background: @darkgrey + #bbb;
+                }
+            }
+        }
+        .tablePicker {
+            display: block;
+            position: absolute;
+            z-index: 100;
+            width: 25%;
+            background: @darkgrey + #999;
+            padding: 10px;
+            border-radius: 5px;
+            ul {
+                display: block;
+                padding: 3px;
+                li {
+                    background: @white !important;
+                    div {
+                        display: inline-block;
+                        border-radius: 100px;
+                    }
+                    div.isChecked {
+                        width: 12px;
+                        margin:10px;
+                    }
+                }
+                li:hover {
+                    background: @blue + #333 !important;
+                    color: @white;
+                }
+            }
+        }
+    }
+}
+
+.uibox {
+    * {
+        all: initial;
+        color: @darkgrey !important;
+    }
+    .content {
+        display: block;
+        li {
+            display: block;
+        }
+        li#selected {
+            background: @darkgrey;
+            color: @lightColor !important;
+        }
+    }
+    button {
+        position: relative;
+        float: right;
+        color: @lightColor !important;
+        background: @blue !important;
+        text-align: center;
+    }
+    button:active {
+        background: @blue - #111 !important;
+    }
+}
+.uibox.wrapper {
+    position: fixed;
+    top: 50px;
+}
+.uibox.buttons {
+    position: relative;
+    float: right;
+}

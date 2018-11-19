@@ -51,9 +51,17 @@
 						var fname = window.vars.droppedFile.name;
 						if (window.vars.fileTypes.indexOf(fname.substring(fname.lastIndexOf('.') + 1).toLowerCase()) > -1) {
 							var reader = new FileReader();
-							reader.onload = () => {
+							reader.onload = async () => {
 								data.profPic = reader.result
-								window.vars.send(data)
+								// window.vars.send(data)
+							 	fetch('/myaccount/saveSettings', {
+									headers: { 'Content-type':'application/json',
+										'X-Requested-With':'XMLHttpRequest'
+									},
+									method: 'put',
+									body: JSON.stringify(data)
+								}).then(res => alert('Saving Failed', 'Error'))
+								// .then(res => res.json()).then(res => alert(res))
 							}
 						} else {
 							throw new Error("unsupported image type")
@@ -61,7 +69,14 @@
 						reader.readAsBinaryString(window.vars.droppedFile);
 					} else {
 						data.profPic = null;
-						window.vars.send(data)
+						console.log(data);
+						fetch('/myaccount/saveSettings', {
+							headers: { 'Content-type':'application/json',
+								'X-Requested-With':'XMLHttpRequest'
+							},
+							method: 'put',
+							body: JSON.stringify(data)
+						})
 					}
 				}
 			});
@@ -74,5 +89,9 @@
 			xhr.setRequestHeader("Content-type", "application/json");
 			xhr.send(JSON.stringify(data))
 		}
+	}
+
+	window.alert = function (str, header) {
+		new UIbox(new template({content: `str`, buttons: [new button('OK', 'ok')]}), header || "Message").show()
 	}
 })()

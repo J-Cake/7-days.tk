@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    link(href="css/calendar.css", rel="stylesheet")
+    script(src="/src/calendar/calendar.js")
+    
+    script window.vars.tableList = #{'['}
+        each table in tables
+            | '#{table}',
+        | #{'null]'}
+        | window.vars.tableList.pop();
+    
+    .calendarTable
+        h2 Select table
+        .calendarEditor
+            .layer
+                
+    .controls
+        button.addRow Add Row
+        button.save Save Calendar

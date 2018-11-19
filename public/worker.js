@@ -1,5 +1,5 @@
 self.addEventListener('push', e => {
-	var data = e.data
+	let data = e.data
 	console.log(data)
 	if (data.title && data.subjectName && data.location) {
 		self.registration.showNotification(data.title, {

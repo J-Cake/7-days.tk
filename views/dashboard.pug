@@ -62,7 +62,12 @@ block content
                     $(".cont").hide();
                     $(".newTableBtn").show();
                 })
-
+        .calendar
+            button.calendarBtn Edit your calendar
+            script.
+                $(".calendarBtn").click(() => {
+                    window.location.href = "/calendar"
+                })
     script.
         $(document).ready(() => {
             (function () {

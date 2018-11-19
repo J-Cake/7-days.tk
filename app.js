@@ -1,19 +1,19 @@
 'use strict'
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var fs = require('fs');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const fs = require('fs');
 
-var session = require("express-session")
-var FileStore = require("session-file-store")(session)
+const session = require("express-session")
+const FileStore = require("session-file-store")(session)
 
-var router = require('./router');
+const router = require('./router');
 
-var app = express();
+const app = express();
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 
